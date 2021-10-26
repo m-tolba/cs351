@@ -97,7 +97,7 @@ function main() {
   }
 
   // Initialize a Vertex Buffer in the graphics system to hold our vertices
-  g_maxVerts = initVertexBuffer(gl);  
+   g_maxVerts = initVertexBuffer(gl);  
   if (g_maxVerts < 0) {
     console.log('Failed to set the vertex information');
     return;
@@ -138,14 +138,27 @@ function main() {
   }
 
 // ------------------------------------------------------------------------------------ANIMATION TEXT--------------------------------------------------------
-  var tick = function() {
-	// var now = Date.now();
-	// spinnyAngle = animateSpin(spinnyAngle, now);
-	// g_last = now;
-	// animateSpin(spin);
-    animate();   // Update the rotation angle
+// var birdAngle = 0.0;
+// var wingAngle = 0.0;
+// var circusAngle = 0.0;
+// var roofAngle = 0.0;
+// var modelMatrix = new Matrix4();
+
+var tick = function() {
+	var now = Date.now();
+	animate();
+    //updating rotation/movement angles
+	// birdAngle = animateBird(birdAngle, now); 
+	// wingAngle = animateWing(wingAngle, now)
+	// circusAngle = animateCircus(circusAngle, now);
+	// roofAngle = animateRoof(roofAngle, now);
 	drawAll();
-    // drawAll(spinnyAngle, g_modelMatrix);   // Draw all parts
+
+	//drawing assemblies
+	g_last = now;
+	// drawCircus(gl, g_maxVerts, circusAngle, roofAngle, modelMatrix, u_ModelMatrix);
+	// drawBird(gl, g_maxVerts, birdAngle, wingAngle, modelMatrix, u_ModelMatrix);
+
 //    console.log('g_angle01=',g_angle01.toFixed(g_digits)); // put text in console.
 
 	//Show some always-changing text in the webpage :  
@@ -271,7 +284,7 @@ function initVertexBuffer() {
 	0.0, 1.0, 0.0, 1.0,  	0.0,0.28,0.73,	// Node 1
 	0.0, 1.0, -0.25,  1.0,	0.40,1.00,0.40,	// Node 9
 
-	//-------66
+	//-------66 so far
 
 	//hexagonal pyramid
 	-0.5, 0.0, 0.0,1.0, 	0.13,1.00,0.00, // Node 1
@@ -298,7 +311,7 @@ function initVertexBuffer() {
 	0.0, 2.0, -0.75,1.0, 	0.70,1.00,1.00, // Node 7
 	-0.5, 0.0, 0.0,1.0, 	0.13,1.00,0.00, // Node 1
 
-	//---18 (or 84)
+	//---18 (or 84 so far)
 
 //base of hexagonal pyramid
 	-0.5, 0.0, 0.0,1.0, 	0.13,1.00,0.00, // Node 1
@@ -316,7 +329,7 @@ function initVertexBuffer() {
 	0.5, 0.0, -1.5, 1.0, 	0.23,0.48,0.34, // Node 4
 	1.0, 0.0, -0.75,1.0,  	0.40,1.00,0.40, // Node 3
 	0.5, 0.0, 0.0,  1.0,	1.00,0.55,0.10, // Node 2
- //-- 12 (96)-------------------------------------------------------------------------------
+ //-- 12 (96 so far)-------------------------------------------------------------------------------
 
  //hexagonal prism
 
@@ -388,7 +401,7 @@ function initVertexBuffer() {
 	 1.0, 2.0, -0.75, 1.0, 	0.40,0.50,1.00, // Node 5
 	 0.5, 2.0, -1.5, 1.0, 	0.23,0.48,0.34, // Node 7
 	
-		////// 48 vertices so total of 144
+		////// 48 vertices , total of 144 so far
 
 	//BOTTOM
 	-1.0, 0.0, -0.75, 1.0, 	1.00,0.85,0.70, // Node 12
@@ -407,7 +420,7 @@ function initVertexBuffer() {
 	 1.0, 0.0, -0.75, 1.0, 	0.95,0.61,0.73, // Node 6
 	 0.5, 0.0, -1.5, 1.0, 	1.00,0.57,0.01, // Node 8
 
-	 //60 VERT	
+	 //60 VERT	, 156 so far
 
 	 //----------------------------------------------------------------
 
@@ -416,7 +429,7 @@ function initVertexBuffer() {
 
   ]);
 
-  g_vertsMax = 156;		// 12 tetrahedron vertices. // we can also draw any subset of these we wish,such as the last 3 vertices.(onscreen at upper right)
+  g_vertsMax = 156;	
 	
   // Create buffer object
   var shapeBufferHandle = gl.createBuffer();  
@@ -478,31 +491,45 @@ function initVertexBuffer() {
 
 }
 
-//==============================================================================DRAW HELPERS!! ==========================================================================
+//==============================================================================DRAW FNXNS!!!!==========================================================================
+
+// Assembly 1 -- hexagonal cylinder with  hexagon pyramid roof and more smaller ones stacked on top, jointed, and moving!
+function drawCircus(gl, n, currentAngle, modelMatrix, u_ModelMatrix){
+	// Clear <canvas>  colors AND the depth buffer
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	clrColr = new Float32Array(4);
+	clrColr = gl.getParameter(gl.COLOR_CLEAR_VALUE);
+	
+	//hexagonal cylinder base
+
+	gl.drawArrays(gl.TRIANGLES, 96, 60); //for the hexagonal base
+
+	//hexagonal pyramid roof (rotates)
+
+	gl.drawArrays(gl.TRIANGLES, 66, 30); //for the pyramid
+
+	//3 hexagonal pyramid decoration pieces (each jointed and moving)
+
+}
+
 function drawTetra(g_modelMatrix){
 	//Use matrix to transform & draw 1st set of vertices stored in VBO:
 	gl.uniformMatrix4fv(g_modelMatLoc, false, g_modelMatrix.elements);
 	// Draw triangles: start at vertex 0 and draw 12 vertices
-	gl.drawArrays(gl.TRIANGLES, 66, 30);
+	gl.drawArrays(gl.TRIANGLES, 66, 30); //for the pyramid
 }
 
-// function drawWedge(g_modelMatrix){
-// 	// matrix used to transform +draw a dif. set of vertices in VBO
-// 	gl.uniformMatrix4fv(g_modelMatLoc, false, g_modelMatrix.elements);
-// 	// Draw last 2 triangles: start at vertex 6, draw 6 vertices
-//   	gl.drawArrays(gl.TRIANGLES, 6,6);
-// }
 
 function drawPart1(g_modelMatrix){
 	// matrix used to transform +draw a set of vertices in VBO
 	gl.uniformMatrix4fv(g_modelMatLoc, false, g_modelMatrix.elements);
-	gl.drawArrays(gl.TRIANGLES, 0,66);
+	gl.drawArrays(gl.TRIANGLES, 0,66); //for the L
 }
 
 function drawPart2(g_modelMatrix){
 	// matrix used to transform +draw a set of vertices in VBO
 	gl.uniformMatrix4fv(g_modelMatLoc, false, g_modelMatrix.elements);
-	gl.drawArrays(gl.TRIANGLES, 96, 60);
+	gl.drawArrays(gl.TRIANGLES, 96, 60); //for the hexagonal base
 }
 
 function drawSet(g_modelMatrix){
@@ -532,12 +559,8 @@ function drawSet(g_modelMatrix){
 	// g_modelMatrix.rotate(dist*120.0, -g_yMdragTot+0.0001, g_xMdragTot+0.0001, 0.0);
 }
 
-//==============================================================================DRAW ALL==========================================================================
+//==============================================================================DRAW FNXNS==========================================================================
 
-// object 1 -- hexagonal cylinder with the hexagon pyramids stacked on top getting smaller and smaller
-function drawCircus(gl, n, currentAngle, modelMatrix, u_ModelMatrix){
-
-}
 
 function drawAll() {
 	// Clear <canvas>  colors AND the depth buffer
