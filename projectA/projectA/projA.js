@@ -138,20 +138,20 @@ function main() {
   }
 
 // ------------------------------------------------------------------------------------ANIMATION TEXT--------------------------------------------------------
-// var birdAngle = 0.0;
-// var wingAngle = 0.0;
-// var circusAngle = 0.0;
-// var roofAngle = 0.0;
-// var modelMatrix = new Matrix4();
+var birdAngle = 0.0;
+var wingAngle = 0.0;
+var circusAngle = 0.0;
+var roofAngle = 0.0;
+var modelMatrix = new Matrix4();
 
 var tick = function() {
 	var now = Date.now();
 	animate();
-    //updating rotation/movement angles
-	// birdAngle = animateBird(birdAngle, now); 
-	// wingAngle = animateWing(wingAngle, now)
-	// circusAngle = animateCircus(circusAngle, now);
-	// roofAngle = animateRoof(roofAngle, now);
+    // updating rotation/movement angles
+	birdAngle = animateBird(birdAngle); 
+	wingAngle = animateWing(wingAngle)
+	circusAngle = animateCircus(circusAngle);
+	roofAngle = animateRoof(roofAngle);
 	drawAll();
 
 	//drawing assemblies
@@ -632,6 +632,31 @@ function drawAll() {
 var g_last = Date.now();
 
 //============================================================================== ANIMATE FUNCTION ==========================================================================
+
+
+function animateBird(angle){
+	var now = Date.now();
+	var elapsed = now - g_last;
+	g_last = now;
+}
+
+function animateWing(angle){
+	var now = Date.now();
+	var elapsed = now - g_last;
+	g_last = now;
+}
+
+function animateCircus(angle){
+	var now = Date.now();
+	var elapsed = now - g_last;
+	g_last = now;
+}
+
+function animateRoof(angle){
+	var now = Date.now();
+	var elapsed = now - g_last;
+	g_last = now;
+}
 
 function animate() {
 	// Calculate the elapsed tim
