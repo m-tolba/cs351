@@ -2,18 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-	<link rel="stylesheet" href="projA.css">
+	<link rel="stylesheet" href="TolbaMariam_ProjA.css">
     <title>THE CIRCUS</title>
   </head>
   <body onload="main()">
 	<h1>Welcome to the Circus! Let's have some fun!</h1>
 	<h2>INSTRUCTIONS:</h2>
-	<h3>To speed up or slow down the rotation speed of the _____, click the “speed up” or “slow down” buttons.</h3>
-	<h3>To move the _____ around the screen, use the w,a,s,d keys on your keyboard!</h3>
-	<h3>To move the _____ around the screen, drag it around with your mouse.</h3>
-	<h3>To change the color of ______, enter an RGB value in the color input box.</h3>
-	<!-- <h3></h3>
-	<h3></h3> -->
+	<h3>To speed up or slow down the wing flap speed of the birds, click the  "inc" or “dec” buttons.</h3>
+	<h3>To move the birds around the screen, use the w,a,s,d keys on your keyboard!</h3>
+	<h3>To move the circus around the screen, drag it around with your mouse.</h3>
+	<h3>To change the color of bird's body, enter an RGB value in the color input box.</h3>
+	<div id = "modifiers" style="text-align: center;">
+		<div id="inputs" style="text-align: center;">
+			<button type="button" class="buttons" id="inc" onclick="incRotate()">inc</button>
+			<button type="button" class="buttons" id="dec" onclick="decRotate()">dec</button>
+			<div id="colorchange" style="text-align: center;">
+				<p>RGB Color Value for each input(between 0.0 and 1.0): </p>
+				<input id="red" placeholder="red"/>
+				<input id="green" placeholder="green"/>
+				<input id="blue" placeholder="blue"/>
+				<button type="button" id="submit" onclick="colorChange()">change color!</button>
+			</div>
+
+	</div>
+	
+
 	<div id="canvas-container" style="text-align:center">
     <canvas id="webgl" width="600" height="600">
     Please use a browser that supports "canvas"
@@ -73,6 +86,6 @@
     <script src="../lib/cuon-matrix-quat03.js"></script>
 	<!--	Finally, load in our own JavaScript program file.
 	-->
-    <script src="projA.js"></script>
+    <script src="TolbaMariam_ProjA.js"></script>
   </body>
 </html>
